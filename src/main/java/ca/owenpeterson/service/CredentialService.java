@@ -8,15 +8,15 @@ public class CredentialService {
 	
 	static Logger logger = Logger.getLogger(CredentialService.class);
 	
-	private static final char[] RESTRICTED_CHARS = " !#$%&'*+-/=?^_`{|}~".toCharArray();
+	private static final char[] RESTRICTED_CHARS = " !#$%&'*+-/=?^_`{|}~@".toCharArray();
 	private static final char[] RESTRICTED_FIRST_CHARS = "_-@".toCharArray(); 
 	
 	public CredentialService() {
 	}
 	
-	public String stripDomain(String emailaddress) {
-		String noDomainUsername = emailaddress;		
-		noDomainUsername = StringUtils.substringBefore(noDomainUsername, "@");
+	public String stripDomain(String emailAddress) {
+		String noDomainUsername = emailAddress;		
+		noDomainUsername = StringUtils.substringBeforeLast(emailAddress, "@");
 		
 		return noDomainUsername;
 	}
@@ -24,10 +24,10 @@ public class CredentialService {
 	public String generateUsername(String emailaddress) {
 		String username = emailaddress;
 		
-		if(hasBadFirstChar(username)) {
+		while(hasBadFirstChar(username)) {
 			logger.debug("Bad first character found!");
 			username = stripFirstChar(username);
-			logger.debug("Username with stripped firstchar: " + username);
+			logger.debug("Username with stripped firstchar: " + username);		
 		}
 		
 		username = stripDomain(username);

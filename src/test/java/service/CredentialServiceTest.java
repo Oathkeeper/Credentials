@@ -1,4 +1,4 @@
-package experiments;
+package service;
 
 import ca.owenpeterson.service.CredentialService;
 import junit.framework.Assert;
@@ -57,6 +57,27 @@ public class CredentialServiceTest extends TestCase {
 		actual = this.credentialService.generateUsername(email);
 		Assert.assertEquals(expected, actual);
 	}
+	
+	public void testMultipleBadFirstChar() {
+		String email = "_@oathkeeper@email.com";
+		String actual;
+		String expected;
+		
+		expected = "oathkeeper";
+		actual = this.credentialService.generateUsername(email);
+		Assert.assertEquals(expected, actual);
+	}
+	
+	public void testMultipleBadFirstCharMultipleOtherChars() {
+		String email = "_@o@at*hk#eeper@email.com";
+		String actual;
+		String expected;
+		
+		expected = "oathkeeper";
+		actual = this.credentialService.generateUsername(email);
+		Assert.assertEquals(expected, actual);
+	}
+	
 	
 
 }
