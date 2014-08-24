@@ -14,15 +14,9 @@ public class CredentialService {
 	public CredentialService() {
 	}
 	
-	public String stripDomain(String emailAddress) {
-		String noDomainUsername = emailAddress;		
-		noDomainUsername = StringUtils.substringBeforeLast(emailAddress, "@");
-		
-		return noDomainUsername;
-	}
-	
-	public String generateUsername(String emailaddress) {
-		String username = emailaddress;
+	public String generateUsername(String emailAddress) {
+		logger.debug("Starting to generate username for: " + emailAddress);
+		String username = emailAddress;
 		
 		while(hasBadFirstChar(username)) {
 			logger.debug("Bad first character found!");
@@ -40,37 +34,50 @@ public class CredentialService {
 			}
 		}
 		
+		logger.debug("Finished generating username. New username is: " + username);
 		return username;
 	}
 	
-	private boolean hasBadFirstChar(String emailaddress) {
+	public String generatePassword() {
+		logger.debug("Generating a new random password.");
+		
+		logger.debug("returning new random password.");
+		return "password";
+	}
+	
+	private boolean hasBadFirstChar(String emailAddress) {
+		logger.debug("Checking for a bad first character in address: " + emailAddress);
 		boolean hasBad = false;
 		
 		for (char c:RESTRICTED_FIRST_CHARS) {
-			if (StringUtils.startsWith(emailaddress, String.valueOf(c))) {
+			if (StringUtils.startsWith(emailAddress, String.valueOf(c))) {
 				hasBad = true;
 			}
 		}
 		
+		logger.debug("returning result of: " + hasBad);
 		return hasBad;
 		
 	}
 	
-	private boolean hasBadOtherChars(String emailaddress) {
+	private boolean hasBadOtherChars(String emailAddress) {
+		logger.debug("Checking for bad special characters in address: " + emailAddress);
 		boolean hasBad = false;
 		
 		for (char c:RESTRICTED_CHARS) {
-			if (StringUtils.contains(emailaddress, c)) {
+			if (StringUtils.contains(emailAddress, c)) {
 				hasBad = true;
 			}
 		}
 		
+		logger.debug("returning result of: " + hasBad);
 		return hasBad;	
 		
 	}
 	
-	private String stripFirstChar(String emailaddress) {
-		String username = emailaddress;
+	private String stripFirstChar(String emailAddress) {
+		logger.debug("Stripping first character from email address: " + emailAddress);
+		String username = emailAddress;
 		
 		if (StringUtils.isNotEmpty(username)) {
 			for (int i = 0; ( (i < (RESTRICTED_FIRST_CHARS.length))); i++) {
@@ -82,7 +89,18 @@ public class CredentialService {
 			}
 		}		
 		
+		logger.debug("returning username with bad first chars removed: " + username);
 		return username;
+	}
+	
+	
+	private String stripDomain(String emailAddress) {
+		logger.debug("Stripping domain from email address: " + emailAddress);
+		String noDomainUsername = emailAddress;		
+		noDomainUsername = StringUtils.substringBeforeLast(emailAddress, "@");
+		
+		logger.debug("returning email without the domain: " + noDomainUsername);
+		return noDomainUsername;
 	}
 
 }
