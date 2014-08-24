@@ -43,7 +43,7 @@ public class CredentialService {
 		return username;
 	}
 	
-	public boolean hasBadFirstChar(String emailaddress) {
+	private boolean hasBadFirstChar(String emailaddress) {
 		boolean hasBad = false;
 		
 		for (char c:RESTRICTED_FIRST_CHARS) {
@@ -56,7 +56,7 @@ public class CredentialService {
 		
 	}
 	
-	public boolean hasBadOtherChars(String emailaddress) {
+	private boolean hasBadOtherChars(String emailaddress) {
 		boolean hasBad = false;
 		
 		for (char c:RESTRICTED_CHARS) {
@@ -69,7 +69,7 @@ public class CredentialService {
 		
 	}
 	
-	public String stripFirstChar(String emailaddress) {
+	private String stripFirstChar(String emailaddress) {
 		String username = emailaddress;
 		
 		if (StringUtils.isNotEmpty(username)) {
