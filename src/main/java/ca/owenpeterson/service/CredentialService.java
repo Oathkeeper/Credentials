@@ -18,7 +18,7 @@ public class CredentialService {
 	public CredentialService() {
 	}
 	
-	public String generateUsername(String emailAddress) {
+	public String generateUsername(String emailAddress)  throws IllegalArgumentException {
 		logger.debug("Starting to generate username for: " + emailAddress);
 		
 		if (StringUtils.isBlank(emailAddress)) {
@@ -136,9 +136,9 @@ public class CredentialService {
 		logger.debug("CredentialService(): getRandomNumberArray(size= " + size + "): Begin");
 		int[] randomNumbers = new int[size];
 		int tempNumber;
-		
+	
 		for (int i = 0; i < size; i ++) {
-			tempNumber = getRandomNumberRange(0, PASSWORD_CHARS.length);
+			tempNumber = getRandomNumberRange(0, PASSWORD_CHARS.length - 1);
 			randomNumbers[i] = tempNumber;
 		}
 		

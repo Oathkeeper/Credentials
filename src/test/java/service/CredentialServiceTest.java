@@ -1,12 +1,11 @@
 package service;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import ca.owenpeterson.service.CredentialService;
 import junit.framework.TestCase;
 
-public class CredentialServiceTest extends TestCase{
+public class CredentialServiceTest extends TestCase {
 	
 	CredentialService credentialService = new CredentialService();
 	
@@ -20,6 +19,7 @@ public class CredentialServiceTest extends TestCase{
 		super.tearDown();
 	}
 	
+	@Test
 	public void testBadFirstCharAt() {
 		String email = "@oathkeeper@email.com";
 		String actual;
@@ -101,6 +101,12 @@ public class CredentialServiceTest extends TestCase{
 		password = this.credentialService.generatePassword();
 		
 		assertTrue("Generated password is not the correct length.", password.length() == 12);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testGenerateUsername_EmptyEmail() throws Exception {
+		String emailAddress = "";
+		this.credentialService.generateUsername(emailAddress);
 	}
 	
 }
