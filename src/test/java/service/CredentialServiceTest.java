@@ -90,7 +90,6 @@ public class CredentialServiceTest extends TestCase{
 		String password;
 		
 		password = this.credentialService.generatePassword();
-		System.out.println(password);
 		
 		assertNotNull(password);
 	}
@@ -100,9 +99,8 @@ public class CredentialServiceTest extends TestCase{
 		String password;
 		
 		password = this.credentialService.generatePassword();
-		System.out.println(password);
 		
-		assertTrue("What is this for?", password.length() == 12);
+		assertTrue("Generated password is not the correct length.", password.length() == 12);
 	}
 	
 }
