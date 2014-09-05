@@ -1,6 +1,8 @@
 package ca.owenpeterson.service;
 
 
+import java.util.Random;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -10,12 +12,18 @@ public class CredentialService {
 	
 	private static final char[] RESTRICTED_CHARS = " !#$%&'*+-/=?^_`{|}~@".toCharArray();
 	private static final char[] RESTRICTED_FIRST_CHARS = "_-@".toCharArray(); 
+	private static final char[] PASSWORD_CHARS = "!#$%&'()*+,-./23456789:;<=>?@ABCDEFGHJKLMNOPRSTUVWXYZ[\\]^_abcdefghijkmnopqrstuvwxyz{|}~".toCharArray();
+	private static final int PASSWORD_LENGTH = 12;
 	
 	public CredentialService() {
 	}
 	
 	public String generateUsername(String emailAddress) {
 		logger.debug("Starting to generate username for: " + emailAddress);
+		
+		if (StringUtils.isBlank(emailAddress)) {
+			throw new IllegalArgumentException("emailAddress cannot be blank!");
+		}
 		String username = emailAddress;
 		
 		while(hasBadFirstChar(username)) {
@@ -38,11 +46,21 @@ public class CredentialService {
 		return username;
 	}
 	
+	
 	public String generatePassword() {
 		logger.debug("Generating a new random password.");
+		StringBuilder passwordBuilder = new StringBuilder();
+		String password;
+		int[] randomNumbers = getRandomNumberArray(PASSWORD_LENGTH);
+		
+		for (int rand : randomNumbers) {
+			passwordBuilder.append(PASSWORD_CHARS[rand]);
+		}
+		
+		password = passwordBuilder.toString();
 		
 		logger.debug("returning new random password.");
-		return "password";
+		return password;
 	}
 	
 	private boolean hasBadFirstChar(String emailAddress) {
@@ -101,6 +119,31 @@ public class CredentialService {
 		
 		logger.debug("returning email without the domain: " + noDomainUsername);
 		return noDomainUsername;
+	}
+	
+	private int getRandomNumberRange(int min, int max) {
+		logger.debug("CredentialService(): getRandomNumberRange(min= " + min + " max= " + max + "): Begin");
+		Random random = new Random();
+		int randomNum;
+		
+		randomNum = random.nextInt((max - min) + 1) + min;
+		
+		logger.debug("CredentialService(): getRandomNumberRange(): returning= " + randomNum + ": End");
+		return randomNum;
+	}
+	
+	private int[] getRandomNumberArray(int size) {
+		logger.debug("CredentialService(): getRandomNumberArray(size= " + size + "): Begin");
+		int[] randomNumbers = new int[size];
+		int tempNumber;
+		
+		for (int i = 0; i < size; i ++) {
+			tempNumber = getRandomNumberRange(0, PASSWORD_CHARS.length);
+			randomNumbers[i] = tempNumber;
+		}
+		
+		logger.debug("CredentialService(): getRandomNumberArray(): End");
+		return randomNumbers;
 	}
 
 }

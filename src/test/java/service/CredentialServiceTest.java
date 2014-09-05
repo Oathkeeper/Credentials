@@ -1,10 +1,12 @@
 package service;
 
+import org.junit.Before;
+import org.junit.Test;
+
 import ca.owenpeterson.service.CredentialService;
-import junit.framework.Assert;
 import junit.framework.TestCase;
 
-public class CredentialServiceTest extends TestCase {
+public class CredentialServiceTest extends TestCase{
 	
 	CredentialService credentialService = new CredentialService();
 	
@@ -25,9 +27,10 @@ public class CredentialServiceTest extends TestCase {
 		
 		expected = "oathkeeper";
 		actual = this.credentialService.generateUsername(email);
-		Assert.assertEquals(expected, actual);
+		assertEquals(expected, actual);
 	}
 	
+	@Test
 	public void testBadFirstCharMinus() {
 		String email = "-oathkeeper@email.com";
 		String actual;
@@ -35,9 +38,10 @@ public class CredentialServiceTest extends TestCase {
 		
 		expected = "oathkeeper";
 		actual = this.credentialService.generateUsername(email);
-		Assert.assertEquals(expected, actual);
+		assertEquals(expected, actual);
 	}
 	
+	@Test
 	public void testBadFirstCharUnderscore() {
 		String email = "_oathkeeper@email.com";
 		String actual;
@@ -45,9 +49,10 @@ public class CredentialServiceTest extends TestCase {
 		
 		expected = "oathkeeper";
 		actual = this.credentialService.generateUsername(email);
-		Assert.assertEquals(expected, actual);
+		assertEquals(expected, actual);
 	}
 	
+	@Test
 	public void testBadFirstCharMultipleOtherChars() {
 		String email = "_oat%hk#eeper@email.com";
 		String actual;
@@ -55,9 +60,10 @@ public class CredentialServiceTest extends TestCase {
 		
 		expected = "oathkeeper";
 		actual = this.credentialService.generateUsername(email);
-		Assert.assertEquals(expected, actual);
+		assertEquals(expected, actual);
 	}
 	
+	@Test
 	public void testMultipleBadFirstChar() {
 		String email = "_@oathkeeper@email.com";
 		String actual;
@@ -65,9 +71,10 @@ public class CredentialServiceTest extends TestCase {
 		
 		expected = "oathkeeper";
 		actual = this.credentialService.generateUsername(email);
-		Assert.assertEquals(expected, actual);
+		assertEquals(expected, actual);
 	}
 	
+	@Test
 	public void testMultipleBadFirstCharMultipleOtherChars() {
 		String email = "_@o@at*hk#eeper@email.com";
 		String actual;
@@ -75,9 +82,27 @@ public class CredentialServiceTest extends TestCase {
 		
 		expected = "oathkeeper";
 		actual = this.credentialService.generateUsername(email);
-		Assert.assertEquals(expected, actual);
+		assertEquals(expected, actual);
 	}
 	
+	@Test
+	public void testGenerateRandomPassword() {
+		String password;
+		
+		password = this.credentialService.generatePassword();
+		System.out.println(password);
+		
+		assertNotNull(password);
+	}
 	
-
+	@Test
+	public void testGenerateRandomPassword_CheckLength() {
+		String password;
+		
+		password = this.credentialService.generatePassword();
+		System.out.println(password);
+		
+		assertTrue("What is this for?", password.length() == 12);
+	}
+	
 }
